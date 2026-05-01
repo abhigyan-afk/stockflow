@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Organization {
+  id                       String   @id @default(cuid())
+  name                     String
+  defaultLowStockThreshold Int      @default(5)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+
+  users    User[]
+  products Product[]
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  passwordHash   String
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  adjustments  StockAdjustment[]
+}
+
+model Product {
+  id                String   @id @default(cuid())
+  organizationId    String
+  name              String
+  sku               String
+  description       String?
+  quantityOnHand    Int      @default(0)
+  costPrice         Float?
+  sellingPrice      Float?
+  lowStockThreshold Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  adjustments  StockAdjustment[]
+
+  @@unique([organizationId, sku])
+  @@index([organizationId])
+}
+
+model StockAdjustment {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  delta     Int
+  note      String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@index([userId])
+}
