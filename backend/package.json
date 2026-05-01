@@ -11,7 +11,7 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "seed": "tsx prisma/seed.ts",
-    "render:build": "npm install && prisma generate && prisma migrate deploy",
+    "render:build": "npm install && prisma generate && prisma migrate deploy && tsx prisma/seed.ts",
     "render:start": "npm run dev"
   },
   "dependencies": {
