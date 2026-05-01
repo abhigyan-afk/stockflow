@@ -1,6 +1,8 @@
 import type { DashboardSummary, Product, Settings, User } from '../types';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:4000';
+// Default to same-origin so Vite can proxy /api and /health to the backend in dev.
+// Set VITE_API_URL only when the API is hosted on a different origin.
+const API_BASE_URL = import.meta.env.VITE_API_URL ?? '';
 const TOKEN_KEY = 'sf_api_token';
 const USER_KEY = 'sf_api_user';
 
