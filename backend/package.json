@@ -9,8 +9,10 @@
     "start": "node dist/server.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
-    "prisma:studio": "prisma studio",
-    "seed": "tsx prisma/seed.ts"
+    "prisma:migrate:deploy": "prisma migrate deploy",
+    "seed": "tsx prisma/seed.ts",
+    "render:build": "npm install && prisma generate && prisma migrate deploy",
+    "render:start": "npm run dev"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
